@@ -28,8 +28,6 @@ cd "Space Launch Tracker"
 python -m venv venv311
 # On Windows:
 venv311\Scripts\activate
-# On macOS/Linux:
-source venv311/bin/activate
 ```
 
 ### 3. Install Dependencies

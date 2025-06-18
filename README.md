@@ -6,11 +6,13 @@ A comprehensive space launch tracking application that monitors and analyzes lau
 
 ```
 Space Launch Tracker/
-├── Dashboard/          # Streamlit dashboard application
+├── Dashboard/         # Streamlit dashboard application
 ├── Data/              # Data files and datasets
 ├── ETL/               # Data extraction, transformation, and loading scripts
 ├── venv311/           # Python virtual environment (ignored by git)
 └── requirements.txt   # Python dependencies
+└── snowflake.sql      # storing Data in Table and merging Table on snowflake
+
 ```
 
 ## Setup Instructions
@@ -45,21 +47,23 @@ AWS_ACCESS_KEY_ID=your_aws_access_key_here
 AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key_here
 AWS_REGION=your_aws_region_here
 BUCKET_NAME=your_s3_bucket_name_here
-
-# Database Configuration (if needed)
-DATABASE_URL=your_database_connection_string_here
-
-# API Keys (if needed)
-API_KEY=your_api_key_here
-
-# Application Configuration
-DEBUG=True
-SECRET_KEY=your_secret_key_here
 ```
 
 **Important**: Never commit your actual `.env` file to version control. The `.gitignore` file is already configured to exclude it.
 
 ### 5. Run the Application
+
+
+#### ETL Scripts
+```bash
+cd ETL
+python fetch_spacex.py
+python fetch_isro.py
+python clean_data.py
+python upload_s3.py
+After This you need to extract data from s3 onto snowflake and store Data in Tables and merge them to form a single table
+python fetch_transformed.py
+```
 
 #### Dashboard
 ```bash
@@ -67,26 +71,15 @@ cd Dashboard
 streamlit run app.py
 ```
 
-#### ETL Scripts
-```bash
-cd ETL
-python clean_data.py
-python fetch_transformed.py
-python upload_s3.py
-```
-
 ## Security Notes
 
 - The `.env` file contains sensitive information and is excluded from version control
 - AWS credentials should be kept secure and never shared
-- Consider using AWS IAM roles for production deployments
-- Regularly rotate your API keys and credentials
 
 ## Data Sources
 
 - SpaceX launch data
-- ISRO launch data
-- Global space exploration dataset
+- Global space exploration dataset We Derive ISRO data from this dataset
 
 ## Contributing
 
@@ -95,7 +88,3 @@ python upload_s3.py
 3. Make your changes
 4. Test thoroughly
 5. Submit a pull request
-
-## License
-
-[Add your license information here] 
